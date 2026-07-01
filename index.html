@@ -39,9 +39,10 @@ body{
     box-shadow:0 0 30px rgba(255,215,0,.45);
 }
 .logo{
-    width:120px;
-    margin-bottom:15px;
-    filter:drop-shadow(0 0 15px gold);
+    width:150px;
+    display:block;
+    margin:0 auto 20px;
+    filter:drop-shadow(0 0 20px gold);
 }
 h2{
     color:gold;
@@ -61,17 +62,22 @@ input{
 
 button{
     width:100%;
-    padding:12px;
-    margin-top:10px;
+    padding:14px;
+    margin-top:15px;
     border:none;
-    border-radius:8px;
-    background:gold;
+    border-radius:10px;
+    background:linear-gradient(90deg,#FFD700,#FFB800);
+    color:#000;
+    font-size:16px;
     font-weight:bold;
     cursor:pointer;
+    transition:.3s;
+    box-shadow:0 0 15px rgba(255,215,0,.5);
 }
 
 button:hover{
-    background:#f5c400;
+    transform:translateY(-2px);
+    box-shadow:0 0 25px gold;
 }
 </style>
 
