@@ -38,12 +38,14 @@ body{
     text-align:center;
     box-shadow:0 0 30px rgba(255,215,0,.45);
 }
+
 .logo{
     width:150px;
     display:block;
     margin:0 auto 20px;
     filter:drop-shadow(0 0 20px gold);
 }
+
 h2{
     color:gold;
     margin-bottom:15px;
@@ -79,6 +81,28 @@ button:hover{
     transform:translateY(-2px);
     box-shadow:0 0 25px gold;
 }
+
+/* Telegram Button */
+.telegram-btn{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border:none;
+    border-radius:10px;
+    background:#229ED9;
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 0 15px rgba(34,158,217,.5);
+}
+
+.telegram-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 25px rgba(34,158,217,.8);
+}
+
 </style>
 
 </head>
@@ -95,9 +119,10 @@ button:hover{
 <input type="password" id="pass" placeholder="Enter Password">
 
 <button onclick="login()">LOGIN</button>
-    <button class="telegram-btn" onclick="openTelegram()">
-    Join Telegram
-    </button>
+
+<button class="telegram-btn" onclick="openTelegram()">
+    📲 Join Telegram (@primeexexchange)
+</button>
 
 </div>
 
@@ -130,6 +155,10 @@ if(
     alert("Invalid Username or Password");
 }
 
+}
+
+function openTelegram(){
+    window.open("https://t.me/primeexexchange", "_blank");
 }
 </script>
 
