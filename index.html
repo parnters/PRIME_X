@@ -14,22 +14,35 @@
 }
 
 body{
-    background:#000;
+    background:linear-gradient(135deg,#000000,#111111,#1b1b1b,#000000);
+    background-size:400% 400%;
+    animation:bgMove 12s ease infinite;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
 }
 
-.box{
-    width:340px;
-    background:#111;
-    border:2px solid gold;
-    border-radius:15px;
-    padding:25px;
-    text-align:center;
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
 }
 
+.box{
+    width:340px;
+    background:rgba(17,17,17,.95);
+    border:2px solid gold;
+    border-radius:18px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 0 30px rgba(255,215,0,.45);
+}
+.logo{
+    width:120px;
+    margin-bottom:15px;
+    filter:drop-shadow(0 0 15px gold);
+}
 h2{
     color:gold;
     margin-bottom:15px;
@@ -67,6 +80,8 @@ button:hover{
 <body>
 
 <div class="box">
+
+<img src="https://i.ibb.co/PsnXhzGc/47825.png" class="logo" alt="PRIME-X Logo">
 
 <h2>LOGIN</h2>
 
