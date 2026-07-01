@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Prime X Dashboard</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000;
+color:#fff;
+overflow-x:hidden;
+}
+
+/* Loading */
+
+#loading{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:99999;
+}
+
+.loader-logo{
+width:150px;
+animation:pulse 1.5s infinite;
+}
+
+.loading-text{
+margin-top:20px;
+font-size:30px;
+color:gold;
+font-weight:bold;
+letter-spacing:4px;
+}
+
+.bar{
+width:220px;
+height:8px;
+background:#222;
+border-radius:20px;
+margin-top:20px;
+overflow:hidden;
+}
+
+.fill{
+width:0%;
+height:100%;
+background:gold;
+animation:load 3s forwards;
+}
+
+@keyframes load{
+100%{width:100%;}
+}
+
+@keyframes pulse{
+50%{transform:scale(1.08);}
+}
+
+/* Dashboard */
+
+#dashboard{
+display:none;
+}
+
+.header{
+background:#111;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:2px solid gold;
+}
+
+.logo{
+width:120px;
+}
+
+.logout{
+
+background:gold;
+color:#000;
+border:none;
+padding:10px 18px;
+border-radius:10px;
+font-weight:bold;
+
+}
+
+.container{
+padding:15px;
+}
+
+.balance{
+
+background:#111;
+border:2px solid gold;
+border-radius:15px;
+padding:25px;
+text-align:center;
+box-shadow:0 0 20px rgba(255,215,0,.4);
+
+}
+
+.balance h3{
+
+color:gold;
+margin-bottom:10px;
+
+}
+
+.balance h1{
+
+font-size:34px;
+margin-bottom:15px;
+
+}
+
+.datetime{
+
+color:gold;
+margin-bottom:15px;
+font-weight:bold;
+
+}
+
+.support-btn a{
+
+display:block;
+background:#0088cc;
+padding:14px;
+border-radius:12px;
+text-decoration:none;
+color:white;
+font-weight:bold;
+
+}
+
+.grid{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:20px;
+
+}
+
+.card{
+
+background:#111;
+border:2px solid gold;
+border-radius:15px;
+padding:22px;
+text-align:center;
+font-weight:bold;
+cursor:pointer;
+
+}
+
+.card:hover{
+
+box-shadow:0 0 15px gold;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="loading">
+
+<img src="https://i.ibb.co/67CvzXhP/47825.png" class="loader-logo">
+
+<div class="loading-text">
+
+PRIME X
+
+</div>
+
+<div class="bar">
+
+<div class="fill"></div>
+
+</div>
+
+</div>
+
+<div id="dashboard">
+
+<div class="header">
+
+<img src="https://i.ibb.co/67CvzXhP/47825.png" class="logo">
+
+<button class="logout" onclick="location.href='index.html'">
+
+Logout
+
+</button>
+
+</div>
+
+<div class="container">
+
+<div class="balance">
+
+<h3>Total Balance</h3>
+
+<h1>₹0.00</h1>
+
+<div id="datetime" class="datetime"></div>
+
+<div class="support-btn">
+
+<a href="https://t.me/raymondpeofficials" target="_blank">
+
+📞 Telegram Support
+
+</a>
+
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="card" onclick="openDeposit()">
+💳
+<br><br>
+Deposit
+</div>
+
+<div class="card" onclick="openWithdraw()">
+💸
+<br><br>
+Withdraw
+</div>
+
+<div class="card" onclick="openDepositHistory()">
+📜
+<br><br>
+Deposit History
+</div>
+
+<div class="card" onclick="openWithdrawHistory()">
+📤
+<br><br>
+Withdraw History
+</div>
+
+<div class="card" onclick="runAccount()">
+▶️
+<br><br>
+Run
+</div>
+
+<div class="card" onclick="stopAccount()">
+⏹️
+<br><br>
+Stop
+</div>
+
+</div>
+<!-- Popup CSS -->
+
+<style>
+
+.popup{
+display:none;
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.85);
+justify-content:center;
+align-items:center;
+z-index:99999;
+padding:15px;
+}
+
+.popup-box{
+width:100%;
+max-width:380px;
+max-height:90vh;
+overflow-y:auto;
+background:#111;
+border:2px solid gold;
+border-radius:18px;
+padding:20px;
+box-shadow:0 0 20px gold;
+}
+
+.popup-box h2{
+color:gold;
+margin-bottom:15px;
+text-align:center;
+}
+
+.popup-box input,
+.popup-box textarea{
+
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#000;
+color:gold;
+border:1px solid gold;
+border-radius:10px;
+
+}
+
+.popup-box button{
+
+width:100%;
+padding:14px;
+margin-top:15px;
+background:gold;
+color:#000;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+
+}
+
+.close-btn{
+background:#444 !important;
+color:#fff !important;
+}
+
+</style>
+
+<!-- Deposit Popup -->
+<div style="margin-top:30px;background:#111;border:2px solid gold;border-radius:15px;padding:20px;">
+
+<h2 style="color:gold;text-align:center;">How It Works</h2>
+
+<h3 style="text-align:center;margin-top:15px;">USDT to INR Exchange</h3>
+
+<p style="margin-top:20px;">
+<b style="color:gold;">01 - SELECT</b><br>
+Select withdrawal method (UPI or Bank Account)
+</p>
+
+<p style="margin-top:15px;">
+<b style="color:gold;">02 - TRANSFER</b><br>
+Deposit USDT to designated address
+</p>
+
+<p style="margin-top:15px;">
+<b style="color:gold;">03 - SETTLEMENT</b><br>
+Receive INR instantly
+</p>
+
+<hr style="margin:25px 0;border:1px solid #444;">
+
+<h2 style="color:gold;text-align:center;">
+Got Questions? We've Got Answers.
+</h2>
+
+<p style="margin-top:20px;">
+<b>How quickly can I get INR for my USDT?</b><br>
+Conversion is instant. Once verified, funds are settled into your bank account within 5–30 minutes.
+</p>
+
+<p style="margin-top:20px;">
+<b>Are there any hidden fees or bonuses?</b><br>
+No hidden fees. We provide the best live market rates and offer special rewards for your first transaction.
+</p>
+
+<p style="margin-top:20px;">
+<b>How safe and reliable is iMoney?</b><br>
+We utilize bank-grade encryption and institutional security architecture with 24/7 support.
+</p>
+
+<p style="margin-top:20px;">
+<b>How do I get started right now?</b><br>
+Simply link your UPI or Bank Account and initiate your first exchange.
+</p>
+
+</div>
+
+<div class="popup" id="depositPopup">
+
+<div class="popup-box">
+
+<h2>Deposit</h2>
+
+<img src="https://i.ibb.co/ccFFV0d1/Screenshot-2026-07-01-18-51-39-42-f64c0fa2acb54796de48adb5b80a6314.jpg"
+style="width:100%;border-radius:10px;">
+
+<h4 style="color:gold;margin-top:15px;">
+Wallet Address
+</h4>
+
+<textarea id="walletAddress" readonly>TWhdb3woitmLVj1KfewNmAvz7ZzuTgzRaS</textarea>
+
+<button onclick="copyWallet()">
+📋 Copy Address
+</button>
+
+<p style="margin-top:15px;">
+Minimum Deposit :
+<b style="color:gold;">50 USD</b>
+</p>
+
+<label for="depositScreenshot" style="display:block;background:#222;color:gold;border:2px dashed gold;padding:15px;margin-top:15px;border-radius:10px;text-align:center;cursor:pointer;">
+📷 Upload Screenshot
+</label>
+
+<input type="file" id="depositScreenshot" accept="image/*" style="display:none;">
+
+<button onclick="depositSubmit()">
+UPLOAD SCREENSHOT & SUBMIT
+</button>
+
+<button class="close-btn" onclick="closePopup('depositPopup')">
+Close
+</button>
+
+</div>
+
+</div>
+
+<!-- Withdraw Popup -->
+
+<div class="popup" id="withdrawPopup">
+
+<div class="popup-box">
+
+<h2>Withdraw</h2>
+
+<input
+type="text"
+placeholder="Bank Name">
+
+<input
+type="text"
+placeholder="Holder Name">
+
+<input
+type="text"
+placeholder="UPI ID">
+
+<button onclick="withdrawSubmit()">
+SUBMIT
+</button>
+
+<button class="close-btn"
+onclick="closePopup('withdrawPopup')">
+Close
+</button>
+
+</div>
+
+</div>
+<!-- Deposit History Popup -->
+
+<div class="popup" id="depositHistoryPopup">
+<div class="popup-box">
+
+<h2>Deposit History</h2>
+
+<p>No Deposit History Found.</p>
+
+<p>Please Contact Telegram Support</p>
+
+<p style="color:gold;font-weight:bold;">
+@raymondpeofficials
+</p>
+
+<button class="close-btn"
+onclick="closePopup('depositHistoryPopup')">
+Close
+</button>
+
+</div>
+</div>
+
+<!-- Withdraw History Popup -->
+
+<div class="popup" id="withdrawHistoryPopup">
+<div class="popup-box">
+
+<h2>Withdraw History</h2>
+
+<p>No Withdrawal History Found.</p>
+
+<p>Please Contact Telegram Support</p>
+
+<p style="color:gold;font-weight:bold;">
+@raymondpeofficials
+</p>
+
+<button class="close-btn"
+onclick="closePopup('withdrawHistoryPopup')">
+Close
+</button>
+
+</div>
+</div>
+
+<script>
+
+// Loading Screen
+window.onload=function(){
+
+setTimeout(function(){
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("dashboard").style.display="block";
+
+},3000);
+
+};
+
+// Live Date & Time
+function updateDateTime(){
+
+const now=new Date();
+
+document.getElementById("datetime").innerHTML=
+"📅 "+now.toLocaleDateString("en-IN")+
+" | ⏰ "+
+now.toLocaleTimeString("en-IN");
+
+}
+
+updateDateTime();
+
+setInterval(updateDateTime,1000);
+
+// Open Popups
+
+function openDeposit(){
+document.getElementById("depositPopup").style.display="flex";
+}
+
+function openWithdraw(){
+document.getElementById("withdrawPopup").style.display="flex";
+}
+
+function openDepositHistory(){
+document.getElementById("depositHistoryPopup").style.display="flex";
+}
+
+function openWithdrawHistory(){
+document.getElementById("withdrawHistoryPopup").style.display="flex";
+}
+
+// Close Popup
+
+function closePopup(id){
+
+document.getElementById(id).style.display="none";
+
+}
+
+// Copy Wallet
+
+function copyWallet(){
+
+const text=document.getElementById("walletAddress").value;
+
+navigator.clipboard.writeText(text);
+
+alert("Wallet Address Copied");
+
+}
+
+// Deposit Submit
+
+function depositSubmit(){
+
+alert("Deposit Request Submitted Successfully.");
+
+closePopup("depositPopup");
+
+}
+
+// Withdraw Submit
+
+function withdrawSubmit(){
+
+alert("Withdrawal Request Submitted Successfully.");
+
+closePopup("withdrawPopup");
+
+}
+
+// Run
+
+function runAccount(){
+
+alert("Account Not Activated.\n\nContact Telegram Support.");
+
+}
+
+// Stop
+
+function stopAccount(){
+
+alert("UPI Not Detected.");
+
+}
+
+</script>
+
+</div>
+
+</body>
+</html>
